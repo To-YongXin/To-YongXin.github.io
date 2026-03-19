@@ -131,19 +131,16 @@
             // 改变粒子物理状态
             particleState = currentChapter;
 
-            // ==========================================
-            // 【修复关键点】状态切换时，重新赋予粒子动能
-            // ==========================================
-            if (particleState === 3) {
-                // 进入“初识”：给挤在中心的粒子一个爆发散开的随机速度
+           if (particleState === 3) {
+                // 进入“初识”：不再爆炸散开，而是赋予一个统一、极其缓慢的“同向”漂流速度
                 for (let i = 0; i < particles.length; i++) {
-                    particles[i].vx = (Math.random() - 0.5) * 4; 
-                    particles[i].vy = (Math.random() - 0.5) * 4; 
+                    particles[i].vx = Math.random() * 0.3 + 0.1; // 微微向右游动
+                    particles[i].vy = (Math.random() - 0.5) * 0.3; // 上下微微浮动
                 }
             } else if (particleState === 4) {
-                // 进入“心里话”：化作落雪，重置为轻盈向下的速度
+                // 进入“心里话”：化作落雪
                 for (let i = 0; i < particles.length; i++) {
-                    particles[i].vx = (Math.random() - 0.5) * 1;
+                    particles[i].vx = (Math.random() - 0.5) * 0.5;
                     particles[i].vy = Math.random() * 1 + 0.5; 
                 }
             }
@@ -185,32 +182,31 @@
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 } 
                 else if (particleState === 2) {
-                    // 初见：星系漩涡 (优化：增加切向力，避免死锁成一个绝对的点)
+                    // 初见：过阻尼聚焦 (不旋转，极其缓慢地向中心靠拢，带有呼吸感)
                     const dx = width / 2 - this.x;
                     const dy = height / 2 - this.y;
                     
-                    // 向心力
-                    this.vx += dx * 0.0001;
-                    this.vy += dy * 0.0001;
+                    // 极弱的向心力
+                    this.vx += dx * 0.00001;
+                    this.vy += dy * 0.00001;
                     
-                    // 切向力 (形成盘旋漩涡)
-                    this.vx += -dy * 0.0002;
-                    this.vy += dx * 0.0002;
+                    // 大阻力，确保运动极其平缓，不会越过中心点
+                    this.vx *= 0.90;
+                    this.vy *= 0.90;
 
-                    // 摩擦力
-                    this.vx *= 0.98;
-                    this.vy *= 0.98;
-
-                    this.x += this.vx;
-                    this.y += this.vy;
+                    // 加上一点微弱的随机游走，看起来像温柔的呼吸，而不是死板的移动
+                    this.x += this.vx + (Math.random() - 0.5) * 0.2;
+                    this.y += this.vy + (Math.random() - 0.5) * 0.2;
                 }
                 else if (particleState === 3) {
-                    // 初识：平缓游动 (准备连线)
-                    this.x += this.vx * 0.5;
-                    this.y += this.vy * 0.5;
-                    // 碰壁反弹
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                    // 初识：同频共振，极其平缓地向一个方向流淌
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    // 无缝穿越边界，营造源源不断的宁静感
+                    if (this.x < 0) this.x = width;
+                    if (this.x > width) this.x = 0;
+                    if (this.y < 0) this.y = height;
+                    if (this.y > height) this.y = 0;
                 }
                 else if (particleState === 4) {
                     // 心里话：化作温柔落雪
