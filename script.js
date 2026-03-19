@@ -147,6 +147,28 @@ yearSelect.value = 2026;
 monthSelect.value = 3;
 
 // 验证逻辑
+// document.getElementById('verify-btn').addEventListener('click', () => {
+//     const y = parseInt(yearSelect.value);
+//     const m = parseInt(monthSelect.value);
+//     const d = parseInt(daySelect.value);
+
+//     // 核心密码：2026年3月14日
+//     if (y === 2026 && m === 3 && d === 14) {
+//         modal.classList.add('hidden');
+//         document.getElementById('error-msg').classList.add('hidden');
+        
+//         // 触发消散动画
+//         state = 'dissolving';
+        
+//         // 延时 2.5 秒后跳转到第二页
+//         setTimeout(() => {
+//             window.location.href = 'page2.html';
+//         }, 2500);
+//     } else {
+//         document.getElementById('error-msg').classList.remove('hidden');
+//     }
+// });
+// 验证逻辑
 document.getElementById('verify-btn').addEventListener('click', () => {
     const y = parseInt(yearSelect.value);
     const m = parseInt(monthSelect.value);
@@ -155,7 +177,10 @@ document.getElementById('verify-btn').addEventListener('click', () => {
     // 核心密码：2026年3月14日
     if (y === 2026 && m === 3 && d === 14) {
         modal.classList.add('hidden');
-        document.getElementById('error-msg').classList.add('hidden');
+        
+        // 增加安全判断：如果存在错误提示标签，才去隐藏它
+        const errorMsg = document.getElementById('error-msg');
+        if (errorMsg) errorMsg.classList.add('hidden');
         
         // 触发消散动画
         state = 'dissolving';
@@ -165,6 +190,8 @@ document.getElementById('verify-btn').addEventListener('click', () => {
             window.location.href = 'page2.html';
         }, 2500);
     } else {
-        document.getElementById('error-msg').classList.remove('hidden');
+        // 增加安全判断：如果存在错误提示标签，才去显示它
+        const errorMsg = document.getElementById('error-msg');
+        if (errorMsg) errorMsg.classList.remove('hidden');
     }
 });
