@@ -187,16 +187,16 @@
                     const dy = height / 2 - this.y;
                     
                     // 极弱的向心力
-                    this.vx += dx * 0.0001;
-                    this.vy += dy * 0.0001;
+                    this.vx += dx * 0.00005;
+                    this.vy += dy * 0.00005;
                     
                     // 大阻力，确保运动极其平缓，不会越过中心点
                     this.vx *= 0.90;
                     this.vy *= 0.90;
 
                     // 加上一点微弱的随机游走，看起来像温柔的呼吸，而不是死板的移动
-                    this.x += this.vx + (Math.random() - 0.5) * 0.3;
-                    this.y += this.vy + (Math.random() - 0.5) * 0.3;
+                    this.x += this.vx + (Math.random() - 0.5) * 0.25;
+                    this.y += this.vy + (Math.random() - 0.5) * 0.25;
                 }
                 else if (particleState === 3) {
                     // 初识：同频共振，极其平缓地向一个方向流淌
