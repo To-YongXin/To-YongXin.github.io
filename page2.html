@@ -130,6 +130,23 @@
             
             // 改变粒子物理状态
             particleState = currentChapter;
+
+            // ==========================================
+            // 【修复关键点】状态切换时，重新赋予粒子动能
+            // ==========================================
+            if (particleState === 3) {
+                // 进入“初识”：给挤在中心的粒子一个爆发散开的随机速度
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].vx = (Math.random() - 0.5) * 4; 
+                    particles[i].vy = (Math.random() - 0.5) * 4; 
+                }
+            } else if (particleState === 4) {
+                // 进入“心里话”：化作落雪，重置为轻盈向下的速度
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].vx = (Math.random() - 0.5) * 1;
+                    particles[i].vy = Math.random() * 1 + 0.5; 
+                }
+            }
         }
 
         // ==========================================
@@ -168,31 +185,39 @@
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 } 
                 else if (particleState === 2) {
-                    // 初见：向中心盘旋汇聚
+                    // 初见：星系漩涡 (优化：增加切向力，避免死锁成一个绝对的点)
                     const dx = width / 2 - this.x;
                     const dy = height / 2 - this.y;
+                    
+                    // 向心力
                     this.vx += dx * 0.0001;
                     this.vy += dy * 0.0001;
-                    // 增加一点阻力，防止飞太快
-                    this.vx *= 0.99;
-                    this.vy *= 0.99;
-                    // 附加一个盘旋力
-                    this.x += this.vx - this.vy * 0.05;
-                    this.y += this.vy + this.vx * 0.05;
+                    
+                    // 切向力 (形成盘旋漩涡)
+                    this.vx += -dy * 0.0002;
+                    this.vy += dx * 0.0002;
+
+                    // 摩擦力
+                    this.vx *= 0.98;
+                    this.vy *= 0.98;
+
+                    this.x += this.vx;
+                    this.y += this.vy;
                 }
                 else if (particleState === 3) {
                     // 初识：平缓游动 (准备连线)
                     this.x += this.vx * 0.5;
                     this.y += this.vy * 0.5;
+                    // 碰壁反弹
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
                 else if (particleState === 4) {
                     // 心里话：化作温柔落雪
-                    this.y += Math.abs(this.vy) * 2 + 0.5; // 缓缓下落
+                    this.y += Math.abs(this.vy) * 1.5; // 缓缓下落
                     this.x += Math.sin(this.y * 0.01) * 0.5; // 随风飘动
                     if (this.y > height) {
-                        this.y = 0;
+                        this.y = -10; // 从顶部重新落下
                         this.x = Math.random() * width;
                     }
                 }
