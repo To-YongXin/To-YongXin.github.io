@@ -88,11 +88,37 @@
         let currentChapter = 0;
         const bgm = document.getElementById('bgm');
 
+        // function startStory() {
+        //     // 播放音乐
+        //     bgm.volume = 0.5; // 设置音量为 50%
+        //     bgm.play().catch(e => console.log("音频播放被拦截，请确保已交互", e));
+        //     nextChapter(1);
+        // }
+        
         function startStory() {
-            // 播放音乐
-            bgm.volume = 0.5; // 设置音量为 50%
-            bgm.play().catch(e => console.log("音频播放被拦截，请确保已交互", e));
-            nextChapter(1);
+            // 确保音频被正确加载和触发
+            bgm.volume = 0.5; 
+            
+            // 使用 Promise 强制捕获播放状态
+            let playPromise = bgm.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // 播放成功，进入下一章
+                    console.log("音乐播放成功！");
+                    nextChapter(1);
+                }).catch(error => {
+                    // 如果被浏览器拦截，依然允许进入下一章，但控制台会报错
+                    console.log("手机浏览器拦截了自动播放:", error);
+                    nextChapter(1);
+                    // 备用方案：给整个页面加一个一次性的触摸监听，只要屏幕任何地方被摸一下就强行播放
+                    document.body.addEventListener('touchstart', function() {
+                        bgm.play();
+                    }, { once: true });
+                });
+            } else {
+                nextChapter(1);
+            }
         }
 
         function nextChapter(chapIndex) {
