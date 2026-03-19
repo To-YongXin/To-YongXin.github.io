@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To YongXin</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
+    <script src="three.min.js"></script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div id="hint">点击这颗心</div>
+
+    <div id="modal" class="hidden">
+        <div class="modal-content">
+            <h2>我们第一次见面在：</h2>
+            <div class="date-picker">
+                <select id="year"></select> <span>年</span>
+                <select id="month"></select> <span>月</span>
+                <select id="day"></select> <span>日</span>
+            </div>
+            <button id="verify-btn">确定</button>
+            <p id="error-msg" class="hidden">时间不对哦，再想想？</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

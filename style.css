@@ -1,0 +1,109 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #050505; /* 深邃的背景色 */
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: #fff;
+}
+
+#canvas-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#hint {
+    position: absolute;
+    bottom: 15%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: #ff99aa;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    z-index: 2;
+    pointer-events: none;
+    animation: breathe 2s infinite alternate;
+}
+
+@keyframes breathe {
+    from { text-shadow: 0 0 5px #ff99aa, 0 0 10px #ff99aa; }
+    to { text-shadow: 0 0 15px #ff4d6d, 0 0 20px #ff4d6d; }
+}
+
+/* 弹窗样式 */
+#modal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+#modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255, 77, 109, 0.3);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #ffb3c1;
+    font-weight: 300;
+}
+
+.date-picker {
+    margin: 20px 0;
+}
+
+select {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: 1px solid #ff99aa;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+}
+
+button {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #c9184a;
+}
+
+#error-msg {
+    color: #ff4d6d;
+    font-size: 0.9rem;
+    margin-top: 15px;
+}
