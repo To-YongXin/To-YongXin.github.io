@@ -48,8 +48,20 @@
             pointer-events: auto;
         }
         h1 { color: #ff99aa; font-weight: 300; letter-spacing: 2px; }
-        p { line-height: 1.8; color: #eee; font-size: 1.1rem; }
         
+        p { 
+            line-height: 1.8; 
+            color: #eee; 
+            font-size: 1.1rem; 
+            text-align: justify; /* 让长段落文字两端对齐，边缘更整齐好看 */
+        }
+        
+        /* 【新增关键代码：让换行符自带呼吸间距】 */
+        p br {
+            display: block;
+            content: "";
+            margin-top: 18px; /* 这里的数字越大，段落之间的空隙就越宽，你可以根据感觉微调 */
+        }
         button {
             background: transparent; border: 1px solid #ff99aa; color: #ff99aa;
             padding: 10px 30px; font-size: 1rem; border-radius: 20px;
