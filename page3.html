@@ -85,11 +85,11 @@
                 直到遇见了你，我好像丧失了这个客观的能力。
                 <br>每次看着你的眼睛，嘴角总会止不住的上扬，有无数次想要将你紧紧抱住，在你耳边轻轻说出那句藏了很久的话。</p>
             
-            <img src="page3-03.gif" alt="背影" class="story-gif">
+            <video class="story-gif" src="page3-03.mp4" autoplay loop muted playsinline></video>
             
             <p>但是我想要等到把一切都安顿好，把完整的、诚意满满的我全部交给你，
                 包括我的家人、我的未来。我想以最正式、最认真的方式，开启属于我们两个人的故事。</p>
-                <img src="page3-01.gif" alt="合影" class="story-gif">
+                <video class="story-gif" src="page3-01.mp4" autoplay loop muted playsinline></video>
 
             <button onclick="nextChapter(2)">下一页</button>
         </div>
@@ -103,8 +103,8 @@
                 你也会有些我也有的小粗心，也会害怕尴尬让我找话题来说；你还会总盯着我看，眼睛忽闪忽闪，不知道藏着些怎样的小心思。
                 就觉得这样的咏馨，很真实，很生动，我离你越来越近。</p>
             
-            <img src="page3-02.gif" alt="拼豆" class="story-gif">
-            <img src="page3-04.gif" alt="日料" class="story-gif">
+            <video class="story-gif" src="page3-02.mp4" autoplay loop muted playsinline></video>
+            <video class="story-gif" src="page3-04.mp4" autoplay loop muted playsinline></video>
             
             <p>跟你待在一起的每一分每一秒，都觉得温柔又安心，时间好像被悄悄加速，这并不短暂的21个小时在恍然间消逝，
                 我只想多停留一会，再多记住一点你的样子。
@@ -175,11 +175,12 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = Math.random() * 1.5 + 0.5; // 赋予一个初始的上升速度
+                // 【修改1：大幅降低初始速度】
+                this.vx = (Math.random() - 0.5) * 0.3; // 水平游走变得更轻柔
+                this.vy = Math.random() * 0.5 + 0.2;   // 向上速度降为原来的约四分之一
                 this.baseSize = Math.random() * 2 + 1;
                 this.color = `rgba(255, 153, 170, ${Math.random() * 0.5 + 0.2})`;
-                this.swayOffset = Math.random() * Math.PI * 2; // 错开摇摆频率
+                this.swayOffset = Math.random() * Math.PI * 2;
             }
 
             update() {
@@ -188,12 +189,12 @@
                 
                 // 根据不同的阅读阶段，微微调整气泡的摇曳姿态
                 if (particleState === 0 || particleState === 1) {
-                    // 平缓上升
-                    this.x += Math.sin(time + this.swayOffset) * 0.5;
+                    // 平缓上升（减弱摇摆幅度）
+                    this.x += Math.sin(time + this.swayOffset) * 0.3;
                 } else if (particleState === 2) {
-                    // 稍微欢快一点的摇曳，对应约会的心情
-                    this.x += Math.sin(time * 2 + this.swayOffset) * 1.2;
-                    this.y -= this.vy * 0.5; // 轻微加速上升
+                    // 稍微欢快一点的摇曳，对应约会的心情（同样减弱加速度）
+                    this.x += Math.sin(time * 1.5 + this.swayOffset) * 0.6;
+                    this.y -= this.vy * 0.2; // 仅仅增加一点点微弱的上升加速度
                 }
 
                 // 飘出屏幕顶端后，从最底端重新生成
