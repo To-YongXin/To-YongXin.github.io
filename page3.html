@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2 - To YongXin</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #050505;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #fff;
+        }
+        canvas {
+            position: absolute; top: 0; left: 0; z-index: 1;
+        }
+        .content-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .chapter {
+            position: absolute;
+            opacity: 0; transform: translateY(20px);
+            transition: all 1.5s ease-in-out;
+            pointer-events: none; 
+            width: 85%; max-width: 600px; 
+            max-height: 75vh; overflow-y: auto; padding: 10px; box-sizing: border-box;
+            -webkit-overflow-scrolling: touch;
+        }
+        .chapter::-webkit-scrollbar { display: none; }
+        .chapter { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .chapter.active {
+            opacity: 1; transform: translateY(0); pointer-events: auto;
+        }
+        
+        h1 { color: #ff99aa; font-weight: 300; letter-spacing: 2px; }
+        
+        p { 
+            line-height: 1.8; color: #eee; font-size: 1.1rem; text-align: justify; 
+        }
+        p br {
+            display: block; content: ""; margin-top: 18px;
+        }
+        
+        /* 【专门为 GIF 动图准备的样式】 */
+        .story-gif {
+            width: 100%; 
+            max-width: 280px; /* 控制动图最大宽度 */
+            border-radius: 15px; 
+            margin: 20px auto; /* 上下留出呼吸感间距 */
+            display: block;
+            box-shadow: 0 10px 30px rgba(255, 153, 170, 0.2);
+            pointer-events: none;
+        }
+
+        button {
+            background: transparent; border: 1px solid #ff99aa; color: #ff99aa;
+            padding: 10px 30px; font-size: 1rem; border-radius: 20px;
+            cursor: pointer; transition: all 0.3s; 
+            margin-top: 20px; margin-bottom: 30px; 
+        }
+        button:hover { background: #ff99aa; color: #050505; }
+        
+        #chap-0 p { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <audio id="bgm" src="music.mp3" loop preload="auto"></audio>
+
+    <div class="content-container">
+        <div id="chap-0" class="chapter active">
+            <h1>第二章</h1>
+            <p>准备好回忆那天的点点滴滴了吗？</p>
+            <button onclick="startStory()">点击开启</button>
+        </div>
+
+        <div id="chap-1" class="chapter">
+            <h1>忍不住的心动</h1>
+            <p>我一直觉得，人的眼睛真的是会说话的，在跟别人的交流与相处中，我喜欢通过眼睛来观察对方的情绪与情感表达。
+                直到遇见了你，我好像丧失了这个客观的能力。
+                <br>每次看着你的眼睛，嘴角总会止不住的上扬，有无数次想要将你紧紧抱住，在你耳边轻轻说出那句藏了很久的话。</p>
+            
+            <img src="page3-03.gif" alt="背影" class="story-gif">
+            
+            <p>但是我想要等到把一切都安顿好，把完整的、诚意满满的我全部交给你，
+                包括我的家人、我的未来。我想以最正式、最认真的方式，开启属于我们两个人的故事。</p>
+                <img src="page3-01.gif" alt="合影" class="story-gif">
+
+            <button onclick="nextChapter(2)">下一页</button>
+        </div>
+
+        <div id="chap-2" class="chapter">
+            <h1>真实的你我</h1>
+            <p>回去的路上你问我，认识了更真实的你感觉怎么样。
+                <br>我想说，真实的咏馨更加可爱、活泼、生动。
+                <br>你会走着走着突然轻轻戳我敲我，会在台阶上蹦蹦跳跳；
+                你会故意假装拧不开瓶盖让我来开，你会跟我一起疯疯癫癫，半夜在地铁狂奔，实现crazy的想法；
+                你也会有些我也有的小粗心，也会害怕尴尬让我找话题来说；你还会总盯着我看，眼睛忽闪忽闪，不知道藏着些怎样的小心思。
+                就觉得这样的咏馨，很真实，很生动，我离你越来越近。</p>
+            
+            <img src="page3-02.gif" alt="拼豆" class="story-gif">
+            <img src="page3-04.gif" alt="日料" class="story-gif">
+            
+            <p>跟你待在一起的每一分每一秒，都觉得温柔又安心，时间好像被悄悄加速，这并不短暂的21个小时在恍然间消逝，
+                我只想多停留一会，再多记住一点你的样子。
+                <br>所有的细节都在告诉我，遇见你是一件多么幸运的事。</p>
+            <button onclick="nextChapter(3)">返回目录</button> </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // UI 与 音乐控制
+        // ==========================================
+        let currentChapter = 0;
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 0.5;
+
+        let audioUnlocked = false;
+        function unlockAudio() {
+            if (!audioUnlocked) {
+                bgm.play().then(() => {
+                    bgm.pause(); 
+                    audioUnlocked = true;
+                    document.removeEventListener('touchstart', unlockAudio);
+                }).catch(e => {});
+            }
+        }
+        document.addEventListener('touchstart', unlockAudio, { once: true });
+        document.addEventListener('click', unlockAudio, { once: true });
+
+        function startStory() {
+            let playPromise = bgm.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => { nextChapter(1); }).catch(error => { nextChapter(1); });
+            } else { nextChapter(1); }
+        }
+
+        function nextChapter(chapIndex) {
+            // 如果传入3，则代表章节结束，跳转回目录页
+            if(chapIndex === 3) {
+                window.location.href = 'menu.html';
+                return;
+            }
+
+            document.getElementById(`chap-${currentChapter}`).classList.remove('active');
+            currentChapter = chapIndex;
+            document.getElementById(`chap-${currentChapter}`).classList.add('active');
+            
+            particleState = currentChapter;
+        }
+
+        // ==========================================
+        // 粒子动效：轻盈上浮的气泡/星光 (全新动画)
+        // ==========================================
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        let particleState = 0; 
+        let time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = Math.random() * 1.5 + 0.5; // 赋予一个初始的上升速度
+                this.baseSize = Math.random() * 2 + 1;
+                this.color = `rgba(255, 153, 170, ${Math.random() * 0.5 + 0.2})`;
+                this.swayOffset = Math.random() * Math.PI * 2; // 错开摇摆频率
+            }
+
+            update() {
+                // 统一的轻盈上升逻辑
+                this.y -= this.vy;
+                
+                // 根据不同的阅读阶段，微微调整气泡的摇曳姿态
+                if (particleState === 0 || particleState === 1) {
+                    // 平缓上升
+                    this.x += Math.sin(time + this.swayOffset) * 0.5;
+                } else if (particleState === 2) {
+                    // 稍微欢快一点的摇曳，对应约会的心情
+                    this.x += Math.sin(time * 2 + this.swayOffset) * 1.2;
+                    this.y -= this.vy * 0.5; // 轻微加速上升
+                }
+
+                // 飘出屏幕顶端后，从最底端重新生成
+                if (this.y < -20) {
+                    this.y = height + 20;
+                    this.x = Math.random() * width;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.baseSize, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 120; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            // 使用半透明黑色填充，产生拖尾效果
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            time += 0.02;
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>

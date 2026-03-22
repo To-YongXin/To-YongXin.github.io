@@ -186,8 +186,9 @@ document.getElementById('verify-btn').addEventListener('click', () => {
         state = 'dissolving';
         
         // 延时 2.5 秒后跳转到第二页
+        // 延时 2.5 秒后跳转到索引页
         setTimeout(() => {
-            window.location.href = 'page2.html';
+            window.location.href = 'menu.html';
         }, 2500);
     } else {
         // 增加安全判断：如果存在错误提示标签，才去显示它
