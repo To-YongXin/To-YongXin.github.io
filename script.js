@@ -123,7 +123,11 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// 4. UI 交互逻辑
+
+
+// ==========================================
+// 4. UI 交互逻辑 (密码验证版)
+// ==========================================
 const modal = document.getElementById('modal');
 const hint = document.getElementById('hint');
 
@@ -133,66 +137,32 @@ function showModal() {
     container.removeEventListener('click', showModal); // 防止重复点击
 }
 
-// 填充日期下拉框
-const yearSelect = document.getElementById('year');
-const monthSelect = document.getElementById('month');
-const daySelect = document.getElementById('day');
-
-for (let i = 2020; i <= 2030; i++) yearSelect.add(new Option(i, i));
-for (let i = 1; i <= 12; i++) monthSelect.add(new Option(i, i));
-for (let i = 1; i <= 31; i++) daySelect.add(new Option(i, i));
-
-// 设置默认选中你们相遇的年份附近，避免找太久
-yearSelect.value = 2026;
-monthSelect.value = 3;
-
-// 验证逻辑
-// document.getElementById('verify-btn').addEventListener('click', () => {
-//     const y = parseInt(yearSelect.value);
-//     const m = parseInt(monthSelect.value);
-//     const d = parseInt(daySelect.value);
-
-//     // 核心密码：2026年3月14日
-//     if (y === 2026 && m === 3 && d === 14) {
-//         modal.classList.add('hidden');
-//         document.getElementById('error-msg').classList.add('hidden');
-        
-//         // 触发消散动画
-//         state = 'dissolving';
-        
-//         // 延时 2.5 秒后跳转到第二页
-//         setTimeout(() => {
-//             window.location.href = 'page2.html';
-//         }, 2500);
-//     } else {
-//         document.getElementById('error-msg').classList.remove('hidden');
-//     }
-// });
 // 验证逻辑
 document.getElementById('verify-btn').addEventListener('click', () => {
-    const y = parseInt(yearSelect.value);
-    const m = parseInt(monthSelect.value);
-    const d = parseInt(daySelect.value);
+    // 获取输入框里的密码
+    const pwd = document.getElementById('pwd-input').value;
 
-    // 核心密码：2026年3月14日
-    if (y === 2026 && m === 3 && d === 14) {
+    // 核心密码比对
+    if (pwd === '03101204') {
         modal.classList.add('hidden');
         
-        // 增加安全判断：如果存在错误提示标签，才去隐藏它
+        // 隐藏错误提示
         const errorMsg = document.getElementById('error-msg');
         if (errorMsg) errorMsg.classList.add('hidden');
         
-        // 触发消散动画
+        // 触发粒子消散动画
         state = 'dissolving';
         
-        // 延时 2.5 秒后跳转到第二页
-        // 延时 2.5 秒后跳转到索引页
+        // 延时 2.5 秒后跳转到索引页 (如果你上一版已经改成了 menu.html)
         setTimeout(() => {
-            window.location.href = 'menu.html';
+            window.location.href = 'menu.html'; 
         }, 2500);
     } else {
-        // 增加安全判断：如果存在错误提示标签，才去显示它
+        // 密码错误，显示提示
         const errorMsg = document.getElementById('error-msg');
         if (errorMsg) errorMsg.classList.remove('hidden');
+        
+        // 密码输错后自动清空输入框，方便重新输入
+        document.getElementById('pwd-input').value = '';
     }
 });

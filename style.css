@@ -107,3 +107,32 @@ button:hover {
     font-size: 0.9rem;
     margin-top: 15px;
 }
+
+/* =========================================
+   新增：密码输入框样式
+   ========================================= */
+   .password-container {
+    margin: 25px 0;
+}
+
+#pwd-input {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: 1px solid #ff99aa;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    outline: none;
+    text-align: center;
+    letter-spacing: 5px; /* 让输入的密码稍微拉开间距，更好看 */
+    width: 70%;
+    max-width: 200px;
+    transition: all 0.3s ease;
+}
+
+/* 选中输入框时的发光效果 */
+#pwd-input:focus {
+    box-shadow: 0 0 15px rgba(255, 153, 170, 0.5);
+    border-color: #ff4d6d;
+    background: rgba(0, 0, 0, 0.7);
+}
