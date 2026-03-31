@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 3 - To YongXin</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #050505;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #fff;
+        }
+        canvas {
+            position: absolute; top: 0; left: 0; z-index: 1;
+        }
+        .content-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .chapter {
+            position: absolute;
+            opacity: 0; transform: translateY(20px);
+            transition: all 1.5s ease-in-out;
+            pointer-events: none; 
+            width: 85%; max-width: 600px; 
+            max-height: 75vh; overflow-y: auto; padding: 10px; box-sizing: border-box;
+            -webkit-overflow-scrolling: touch;
+        }
+        .chapter::-webkit-scrollbar { display: none; }
+        .chapter { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .chapter.active {
+            opacity: 1; transform: translateY(0); pointer-events: auto;
+        }
+        
+        h1 { color: #ff99aa; font-weight: 300; letter-spacing: 2px; }
+        
+        p { 
+            line-height: 1.8; color: #eee; font-size: 1.1rem; text-align: justify; 
+        }
+        p br {
+            display: block; content: ""; margin-top: 18px;
+        }
+        
+        /* 媒体素材的统一相框样式 (适用于视频和图片) */
+        .story-media {
+            width: 100%; 
+            max-width: 280px; 
+            border-radius: 15px; 
+            margin: 25px auto; 
+            display: block;
+            box-shadow: 0 10px 30px rgba(255, 218, 185, 0.2); /* 偏暖色的阴影 */
+            pointer-events: none;
+        }
+
+        button {
+            background: transparent; border: 1px solid #ff99aa; color: #ff99aa;
+            padding: 10px 30px; font-size: 1rem; border-radius: 20px;
+            cursor: pointer; transition: all 0.3s; 
+            margin-top: 20px; margin-bottom: 30px; 
+        }
+        button:hover { background: #ff99aa; color: #050505; }
+        
+        #chap-0 p { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <audio id="bgm" src="music.mp3" loop preload="auto"></audio>
+
+    <div class="content-container">
+        <div id="chap-0" class="chapter active">
+            <h1>第三章</h1>
+            <p>一些关于南京的雨，和你。</p>
+            <button onclick="startStory()">点击开启</button>
+        </div>
+
+        <div id="chap-1" class="chapter">
+            <h1>暖光与晴天</h1>
+            <p>三月的南京，真的下了太多太多的雨
+            <br>此刻坐在前工院的玻璃窗前，暖色的灯光打在桌上，窗外是淅淅沥沥的雨和行色匆匆的路人，学习之余不免开始思绪流淌
+            <br>在没有认识你之前，经常会觉得，大概自己会孤独的度过此生，不会有人读懂真正的我。但是好在幸运，在这阴雨连绵中等到了晴天，在春光乍破、花开最美之时，遇见了你</p>
+            
+            <img src="beauty.jpg" alt="我们的瞬间" class="story-media">
+            
+            <button onclick="nextChapter(2)">下一页</button>
+        </div>
+
+        <div id="chap-2" class="chapter">
+            <h1>千千万万遍</h1>
+            <p>很多时候会觉得，你像只小猫，可爱到想要将你抱在怀中，摸摸你的头顺顺你的毛
+            <br>无数次看向你，目光越过明媚的双眸，扫过鼻尖，落在双唇，感觉软软的，香香的</p>
+            
+            <video class="story-media" src="we_two.mp4" autoplay loop muted playsinline></video>
+            
+            <p>每次牵着你的手，想要紧紧握住，不松开；当你靠在怀里，软乎乎的，很安心，很舒服
+            <br>我在心里默默对自己说，这就是我想要牵着手走过一生的人。我希望能一直握着你的手，有很长很长的以后
+            <br>......
+            <br>窗外的雨下大了，但也无妨，因为你我的世界彻底放晴
+            <br> --2026.3.30 俊玮 于前工院</p>
+            
+            <button onclick="nextChapter(3)">返回目录</button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // UI 与 音乐控制
+        // ==========================================
+        let currentChapter = 0;
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 0.5;
+
+        let audioUnlocked = false;
+        function unlockAudio() {
+            if (!audioUnlocked) {
+                bgm.play().then(() => {
+                    bgm.pause(); 
+                    audioUnlocked = true;
+                    document.removeEventListener('touchstart', unlockAudio);
+                }).catch(e => {});
+            }
+        }
+        document.addEventListener('touchstart', unlockAudio, { once: true });
+        document.addEventListener('click', unlockAudio, { once: true });
+
+        function startStory() {
+            let playPromise = bgm.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => { nextChapter(1); }).catch(error => { nextChapter(1); });
+            } else { nextChapter(1); }
+        }
+
+        function nextChapter(chapIndex) {
+            // 如果传入3，则代表章节结束，跳转回目录页
+            if(chapIndex === 3) {
+                window.location.href = 'menu.html';
+                return;
+            }
+
+            document.getElementById(`chap-${currentChapter}`).classList.remove('active');
+            currentChapter = chapIndex;
+            document.getElementById(`chap-${currentChapter}`).classList.add('active');
+        }
+
+        // ==========================================
+        // 粒子动效：前工院的暖光细雨
+        // ==========================================
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                // 微微向右下角倾斜飘落
+                this.vx = 0.2 + Math.random() * 0.3; 
+                this.vy = 0.5 + Math.random() * 0.6; 
+                this.baseSize = Math.random() * 1.5 + 0.5;
+                // 颜色设定为暖金/桃色，呼应“暖光”
+                this.color = `rgba(255, 218, 185, ${Math.random() * 0.5 + 0.1})`;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // 飘出屏幕底端或右端后，从上方重新生成
+                if (this.y > height) {
+                    this.y = -10;
+                    this.x = Math.random() * width;
+                }
+                if (this.x > width) {
+                    this.x = -10;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.baseSize, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 150; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            // 使用偏暖黑色的半透明填充，营造温馨的深夜感
+            ctx.fillStyle = 'rgba(8, 5, 5, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
