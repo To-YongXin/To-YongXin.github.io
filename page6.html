@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5 - Together Forever</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #050505;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #fff;
+        }
+        canvas {
+            position: absolute; top: 0; left: 0; z-index: 1;
+        }
+        .content-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .chapter {
+            position: absolute;
+            opacity: 0; transform: translateY(20px);
+            transition: all 1.5s ease-in-out;
+            pointer-events: none; 
+            width: 85%; max-width: 600px; 
+            max-height: 80vh; overflow-y: auto; padding: 15px; box-sizing: border-box;
+            -webkit-overflow-scrolling: touch;
+        }
+        .chapter::-webkit-scrollbar { display: none; }
+        .chapter { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .chapter.active {
+            opacity: 1; transform: translateY(0); pointer-events: auto;
+        }
+        
+        h1 { color: #ffcc66; font-weight: 300; letter-spacing: 2px; }
+        
+        p { 
+            line-height: 1.8; color: #eee; font-size: 1.05rem; text-align: justify; 
+        }
+        /* 段落间距 */
+        p br {
+            display: block; content: ""; margin-top: 20px;
+        }
+        
+        .story-media {
+            width: 100%; 
+            max-width: 280px; 
+            border-radius: 12px; 
+            margin: 25px auto; 
+            display: block;
+            box-shadow: 0 8px 25px rgba(255, 204, 102, 0.2);
+            pointer-events: none;
+        }
+
+        button {
+            background: transparent; border: 1px solid #ffcc66; color: #ffcc66;
+            padding: 10px 30px; font-size: 1rem; border-radius: 20px;
+            cursor: pointer; transition: all 0.3s; 
+            margin-top: 20px; margin-bottom: 40px; 
+        }
+        button:hover { background: #ffcc66; color: #050505; }
+        
+        .signature {
+            text-align: right !important;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 40px;
+            display: block;
+        }
+        
+        #chap-0 p { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <audio id="bgm" src="多远都要在一起.acc" loop preload="auto"></audio>
+
+    <div class="content-container">
+        <div id="chap-0" class="chapter active">
+            <h1>第五章</h1>
+            <p>多远都要在一起</p>
+            <button onclick="startStory()">点击开启</button>
+        </div>
+
+        <div id="chap-1" class="chapter">
+            <h1>跨越距离的见证</h1>
+            <p>宝宝
+            <br>今天已经是我们相识的第52天，在一起的32天了。
+            <br>有时候真的感慨，人生和命运真的是交织变幻，难以琢磨和预测。本来这个篇章已经在4月28号的凌晨构思好，大概是为我们的无法相见而惋惜，为了下一次的见面做一些铺垫。但是很幸运的是，我们还是见面了。</p>
+            
+            <video class="story-media" src="rose.mp4" autoplay loop muted playsinline></video>
+            
+            <p>从小区到车站，拖着行李和玫瑰狂奔，穿过车水马龙，人潮拥挤。看到路人打量的目光，我会想，我真的好幸福，能有一个让我愿意跨越三百公里一路想着念着的人，我赢麻了。</p>
+            <button onclick="nextChapter(2)">继续阅读</button>
+        </div>
+
+        <div id="chap-2" class="chapter">
+            <h1>爱能克服远距离</h1>
+            <p>宝宝，虽然南京上海相隔近千里，可爱没有学过地理。只要思念，也不过片刻便可相见。
+            <br>我想说的是，爱能克服远距离，无论多远我们都要在一起！</p>
+
+            <video class="story-media" src="1month.mp4" autoplay loop muted playsinline></video>
+
+            <p>宝宝，我真的好喜欢你。喜欢将你紧紧抱住，感受你发间的芬芳；喜欢每次望向你明媚的双眸，唇间传来的温柔；喜欢你睡着后迷迷糊糊挂在我身上，喜欢吻你吻到喘不过气，喜欢将所有的爱和占有欲都表达给你。
+            <br>要是时间过的再慢些就好了，或者干脆快些，快到你我毕业有了自己的小家，还有一只小猫……
+            <br>以此篇，记录我们共同努力的第一个月，也开启属于我们的新篇章。剩下的路我们一起慢慢走，跨越山海，一屋两人三餐四季。</p>
+            <img src="us.jpg" alt="我们的合照" class="story-media">
+            
+            <span class="signature">
+                2026.05.03 凌晨<br>
+                于南通 如东
+            </span>
+            
+            <button onclick="nextChapter(3)">返回目录</button>
+        </div>
+    </div>
+
+    <script>
+        let currentChapter = 0;
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 0.5;
+
+        // 音频解锁逻辑
+        let audioUnlocked = false;
+        function unlockAudio() {
+            if (!audioUnlocked) {
+                bgm.play().then(() => {
+                    bgm.pause(); 
+                    audioUnlocked = true;
+                    document.removeEventListener('touchstart', unlockAudio);
+                }).catch(e => {});
+            }
+        }
+        document.addEventListener('touchstart', unlockAudio, { once: true });
+        document.addEventListener('click', unlockAudio, { once: true });
+
+        function startStory() {
+            let playPromise = bgm.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => { nextChapter(1); }).catch(error => { nextChapter(1); });
+            } else { nextChapter(1); }
+        }
+
+        function nextChapter(chapIndex) {
+            if(chapIndex === 3) {
+                window.location.href = 'menu.html';
+                return;
+            }
+            document.getElementById(`chap-${currentChapter}`).classList.remove('active');
+            currentChapter = chapIndex;
+            document.getElementById(`chap-${currentChapter}`).classList.add('active');
+        }
+
+        // ==========================================
+        // 粒子动效：流光萤火 (Warm Amber Trails)
+        // ==========================================
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Spark {
+            constructor() {
+                this.init();
+            }
+            init() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 1.5 + 0.5; // 向右飘移，模拟行进感
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.life = Math.random() * 100 + 100;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > width) this.x = -10;
+                if (this.y > height) this.y = 0;
+                if (this.y < 0) this.y = height;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 204, 102, ${this.opacity})`; // 琥珀暖色
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = "#ffcc66";
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Spark());
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; // 淡淡的拖尾
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
