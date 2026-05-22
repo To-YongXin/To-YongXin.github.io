@@ -51,7 +51,7 @@
             border-radius: 12px; 
             margin: 25px auto; 
             display: block;
-            box-shadow: 0 8px 25px rgba(255, 204, 102, 0.2);
+            box-shadow: 0 8px 25px rgba(255, 153, 170, 0.2);
             pointer-events: none;
         }
 
@@ -159,7 +159,7 @@
         }
 
         // ==========================================
-        // 粒子动效：流光萤火 (Warm Amber Trails)
+        // 粒子动效：流光萤火
         // ==========================================
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
@@ -196,9 +196,9 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 204, 102, ${this.opacity})`; // 琥珀暖色
+                ctx.fillStyle = `rgba(255, 153, 170, ${this.opacity})`;
                 ctx.shadowBlur = 5;
-                ctx.shadowColor = "#ffcc66";
+                ctx.shadowColor = "#ff99aa";
                 ctx.fill();
                 ctx.shadowBlur = 0;
             }
