@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第X章 - To YongXin</title>
+    <link rel="stylesheet" href="../../assets/css/chapter.css">
+</head>
+<!--
+  新建章节步骤：
+  1. 复制本目录到 chapters/06-your-slug/
+  2. 在 media/ 放入本章图片、视频、音乐
+  3. 编辑 index.html 正文（chap-0 封面、chap-1… 内容页）
+  4. 在 chapters/chapters.json 增加一条配置（path、title、enabled: true）
+  5. body 属性：
+     - data-particle: spark | bubble | petal | warm-rain | firefly-states
+     - data-end-chapter: 最后一页「返回目录」按钮传入的索引（通常是 3）
+-->
+<body data-menu-url="../../menu.html" data-end-chapter="3" data-particle="spark">
+
+    <canvas id="bg-canvas"></canvas>
+    <audio id="bgm" src="media/your-music.mp3" loop preload="auto"></audio>
+
+    <div class="content-container">
+        <div id="chap-0" class="chapter active">
+            <h1>第X章</h1>
+            <p>章节副标题</p>
+            <button onclick="startStory()">点击开启</button>
+        </div>
+
+        <div id="chap-1" class="chapter">
+            <h1>小节标题</h1>
+            <p>在这里写下你的文字…</p>
+            <!-- <img src="media/photo.jpg" alt="" class="story-media"> -->
+            <!-- <video class="story-media" src="media/video.mp4" autoplay loop muted playsinline></video> -->
+            <button onclick="nextChapter(2)">继续阅读</button>
+        </div>
+
+        <div id="chap-2" class="chapter">
+            <h1>另一小节</h1>
+            <p>更多内容…</p>
+            <button onclick="nextChapter(3)">返回目录</button>
+        </div>
+    </div>
+
+    <script src="../../assets/js/chapter.js"></script>
+    <script src="../../assets/js/particles.js"></script>
+</body>
+</html>

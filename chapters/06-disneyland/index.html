@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第六章 · 此刻最好的都在身边 - To YongXin</title>
+    <link rel="stylesheet" href="../../assets/css/chapter.css">
+</head>
+<!--
+  【第六章 · 编辑指南】
+  1. 把照片、视频放进本目录 media/，文件名可自定，改下面 src="media/xxx" 即可
+  2. 在 <p> 里写感受，用 <br> 分段（会自动留出间距）
+  3. 图片：<img src="media/你的照片.jpg" alt="说明" class="story-media">
+  4. 视频：<video class="story-media" src="media/你的视频.mp4" autoplay loop muted playsinline></video>
+  5. 不需要的小节可整段 <div id="chap-N">…</div> 删掉，并调整按钮的 nextChapter 数字
+  6. 背景音乐已设为 media/magic.mp3，替换音乐只需改 <audio> 的 src
+-->
+<body data-menu-url="../../menu.html" data-end-chapter="3" data-particle="bubble" class="page--spacious page--tall">
+
+    <canvas id="bg-canvas"></canvas>
+    <audio id="bgm" src="media/magic.mp3" loop preload="auto"></audio>
+
+    <div class="content-container">
+        <!-- 封面 -->
+        <div id="chap-0" class="chapter active">
+            <h1>第六章</h1>
+            <p>此刻最好的都在身边</p>
+            <p style="font-size: 0.95rem; color: #aaa; text-align: center;">提前庆祝的 520 · 迪士尼</p>
+            <button onclick="startStory()">点击开启</button>
+        </div>
+
+        <!-- 第一页：出发前 / 初见乐园（改标题和正文） -->
+        <div id="chap-1" class="chapter">
+            <h1>赴一场童话</h1>
+            <p>宝宝
+            <!-- <br>（在这里写：为什么想提前过 520、去迪士尼前的心情、见到她时的第一反应……）</p> -->
+
+            <!-- <p>（接续文字：入园路上、排队、小细节……）</p> -->
+
+            <!-- 放好文件后取消下面注释，并把文件名改成你的 -->
+            <!-- <img src="media/cover.jpg" alt="迪士尼 · 封面照" class="story-media"> -->
+            <!-- <video class="story-media" src="media/clip-01.mp4" autoplay loop muted playsinline></video> -->
+
+            <button onclick="nextChapter(2)">继续阅读</button>
+        </div>
+
+        <!-- 第二页：游玩瞬间（可多图多视频） -->
+        <div id="chap-2" class="chapter">
+            <h1>乐园里的我们</h1>
+            <!-- <p>（写：项目、烟花、花车、她笑起来的样子、你想记住的画面……）</p> -->
+
+            <!-- <img src="media/photo-01.jpg" alt="游玩照片 1" class="story-media"> -->
+            <!-- <img src="media/photo-02.jpg" alt="游玩照片 2" class="story-media"> -->
+            <!-- <video class="story-media" src="media/video-01.mp4" autoplay loop muted playsinline></video> -->
+            <!-- <video class="story-media" src="media/video-02.mp4" autoplay loop muted playsinline></video> -->
+
+            <!-- <p>（接续感受：哪一刻最心动、最想抱抱她、最想定格的瞬间……）</p> -->
+
+            <button onclick="nextChapter(3)">继续阅读</button>
+        </div>
+
+        <!-- 第三页：收束 + 返回目录 -->
+        <div id="chap-3" class="chapter">
+            <h1>此刻最好的都在身边</h1>
+            <!-- <p>（写：这一天的总结、想对她说的话、520 的心意……）</p> -->
+
+            <!-- <img src="media/photo-03.jpg" alt="合照或最爱的一张" class="story-media"> -->
+
+            <p>（可选：再补一段）</p>
+
+            <span class="signature">
+                2026.05.10 · 520<br>
+                于上海迪士尼 · 俊玮
+            </span>
+
+            <button onclick="nextChapter(3)">返回目录</button>
+        </div>
+    </div>
+
+    <script src="../../assets/js/chapter.js"></script>
+    <script src="../../assets/js/particles.js"></script>
+</body>
+</html>

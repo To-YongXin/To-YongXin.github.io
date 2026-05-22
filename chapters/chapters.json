@@ -1,0 +1,51 @@
+{
+  "chapters": [
+    {
+      "id": "01-story-begin",
+      "number": "一",
+      "title": "故事的开始",
+      "path": "chapters/01-story-begin/",
+      "enabled": true,
+      "legacy": "page2.html"
+    },
+    {
+      "id": "02-first-date",
+      "number": "二",
+      "title": "第一次约会",
+      "path": "chapters/02-first-date/",
+      "enabled": true,
+      "legacy": "page3.html"
+    },
+    {
+      "id": "03-sunny-days",
+      "number": "三",
+      "title": "都是艳阳天",
+      "path": "chapters/03-sunny-days/",
+      "enabled": true,
+      "legacy": "page4.html"
+    },
+    {
+      "id": "04-for-you",
+      "number": "四",
+      "title": "为你千万遍",
+      "path": "chapters/04-for-you/",
+      "enabled": true,
+      "legacy": "page5.html"
+    },
+    {
+      "id": "05-together",
+      "number": "五",
+      "title": "多远都要在一起",
+      "path": "chapters/05-together/",
+      "enabled": true,
+      "legacy": "page6.html"
+    },
+    {
+      "id": "06-disneyland",
+      "number": "六",
+      "title": "此刻最好的都在身边",
+      "path": "chapters/06-disneyland/",
+      "enabled": true
+    }
+  ]
+}

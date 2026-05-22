@@ -1,0 +1,156 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #050505;
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: #fff;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.content-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.chapter {
+    position: absolute;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1.5s ease-in-out;
+    pointer-events: none;
+    width: 85%;
+    max-width: 600px;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+body.page--tall .chapter {
+    max-height: 80vh;
+    padding: 15px;
+}
+
+.chapter::-webkit-scrollbar {
+    display: none;
+}
+
+.chapter {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.chapter.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+h1 {
+    color: #ff99aa;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+p {
+    line-height: 1.8;
+    color: #eee;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+body.page--compact p {
+    font-size: 1.05rem;
+}
+
+p br {
+    display: block;
+    content: "";
+    margin-top: 18px;
+}
+
+body.page--compact p br {
+    margin-top: 20px;
+}
+
+.story-media,
+.story-gif {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 15px;
+    margin: 25px auto;
+    display: block;
+    box-shadow: 0 10px 30px rgba(255, 153, 170, 0.2);
+    pointer-events: none;
+}
+
+body.page--warm .story-media {
+    box-shadow: 0 10px 30px rgba(255, 218, 185, 0.2);
+}
+
+body.page--compact .story-media {
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(255, 153, 170, 0.2);
+}
+
+button {
+    background: transparent;
+    border: 1px solid #ff99aa;
+    color: #ff99aa;
+    padding: 10px 30px;
+    font-size: 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+body.page--spacious button {
+    margin-bottom: 40px;
+}
+
+button:hover {
+    background: #ff99aa;
+    color: #050505;
+}
+
+#chap-0 p {
+    text-align: center;
+}
+
+.highlight-text {
+    color: #ff99aa;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center !important;
+    display: block;
+    margin-top: 30px;
+}
+
+.signature {
+    text-align: right !important;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 40px;
+    display: block;
+}
